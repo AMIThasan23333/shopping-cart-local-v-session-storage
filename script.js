@@ -12,13 +12,13 @@ const getInputValueById = id => {
  const addProduct = () => {
 
     const product = getInputValueById('product-name-field');
-
-    const quatity = getInputValueById('product-quantity-field') 
-    displayProduct(product,quatity)
+    const quantity = getInputValueById('product-quantity-field') 
+    adddisplayProduct(product,quantity)
+    localStorage.setItem(product, quantity)
  }
 
 
- const displayProduct = (product,quatity) => {
+ const adddisplayProduct = (product,quantity) => {
 
 
     const productContainer = document.getElementById('producC');
@@ -27,9 +27,64 @@ const getInputValueById = id => {
 
     const li = document.createElement('li');
 
-    li.innerText  = `${product} : ${quatity}`
+    li.innerText  = `${product} : ${quantity}`
 
 
   productContainer.appendChild(li);
 
  }
+
+ const getShoppingCartFromLocalStorage = () => {
+
+
+   let savedCart = localStorage.getItem('cart');
+
+   let cart = {};
+
+   if(savedCart){
+ 
+      cart= JSON.parse(savedCart);
+
+
+   }
+
+   return cart;
+
+
+
+ }
+
+
+   const savedItemToLocalStorage = (product,quantity) => {
+
+
+      const cart = getShoppingCartFromLocalStorage();
+
+      cart[product] = quantity;
+
+      const cartStringified = JSON.stringify(cart);
+
+      localStorage.setItem('cart', cartStringified);
+   }
+
+   const displayStoredProduct = () => {
+
+
+      const cart = getShoppingCartFromLocalStorage();
+
+      for(const product in cart){
+
+         console.log(product)
+
+         const quantity = cart[product];
+
+         console.log(product, quantity)
+
+         adddisplayProduct(product,quantity)
+      }
+
+
+
+   }
+
+   displayStoredProduct()
